@@ -3,7 +3,7 @@ var searchTerm = "";
 var numResults = 0;
 var startYear = 0;
 var endYear = 0;
-
+$("#resultCard").hide();
 var queryURLBase = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" +
     authKey + "&q=";
 var articleCounter = 0;
@@ -12,6 +12,7 @@ function runQuery(numArticles, queryURL) {
         url: queryURL,
         method: "GET"
     }).then(function(NYTData) {
+        $("#resultCard").show();
         console.log("------------------------------------");
         console.log("URL: " + queryURL);
         console.log("------------------------------------");
@@ -22,7 +23,7 @@ function runQuery(numArticles, queryURL) {
             var wellSection = $("<div>");
             wellSection.addClass("well");
             wellSection.attr("id", "article-well-" + articleCounter);
-            $("#well-section").append(wellSection);
+            $("#resultBody").append(wellSection);
             if (NYTData.response.docs[i].headline !== "null") {
                 $("#article-well-" + articleCounter)
                     .append(
@@ -57,11 +58,11 @@ $("#run-search").on("click", function(event) {
     event.preventDefault();
     articleCounter = 0;
     $("#well-section").empty();
-    searchTerm = $("#search-term").val().trim();
+    searchTerm = $("#searchTerm").val().trim();
     var searchURL = queryURLBase + searchTerm;
-    numResults = $("#num-records-select").val();
-    startYear = $("#start-year").val().trim();
-    endYear = $("#end-year").val().trim();
+    numResults = $("#numResults").val();
+    startYear = $("#startYear").val().trim();
+    endYear = $("#endYear").val().trim();
     if (parseInt(startYear)) {
         searchURL = searchURL + "&begin_date=" + startYear + "0101";
     }
